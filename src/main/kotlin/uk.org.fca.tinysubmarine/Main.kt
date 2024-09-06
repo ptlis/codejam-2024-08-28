@@ -8,10 +8,7 @@ fun main(args: Array<String>) {
     val vertexPairs = readVertexPairs("./data/rawdata")
     println(vertexPairs)
 
-    val vertices = getVertices(vertexPairs)
-    println(vertices)
-
-    val vertexConnections = findVerticesConnections(vertices, vertexPairs)
+    val vertexConnections = findVerticesConnections(vertexPairs)
     println(vertexConnections)
 }
 
@@ -22,21 +19,7 @@ fun readVertexPairs(fileName: String): List<Pair<String, String>> {
         .map { Pair(it.first(), it.last()) }
 }
 
-fun getVertices(vertexPairs: List<Pair<String, String>>): List<String> {
-    var verticies: MutableList<String> = mutableListOf()
-
-    vertexPairs.forEach {
-        verticies.add(it.first)
-        verticies.add(it.second)
-    }
-
-    return verticies.distinct().toList()
-}
-
-fun findVerticesConnections(
-    vertices: List<String>,
-    vertexPairs: List<Pair<String, String>>
-): Map<String, List<String>> {
+fun findVerticesConnections(vertexPairs: List<Pair<String, String>>): Map<String, List<String>> {
     val vertexConnections: MutableMap<String, MutableList<String>> = mutableMapOf();
 
     vertexPairs.forEach {
@@ -53,7 +36,5 @@ fun findVerticesConnections(
         }
     }
 
-    return vertexConnections.mapValues {
-        key: String, connections: MutableList<String> -> (key -> connections.toList())
-    }.toMap()
+    return vertexConnections.mapValues {it.value.toList()}.toMap()
 }
