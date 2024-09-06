@@ -5,11 +5,11 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
 >
     <modelVersion>4.0.0</modelVersion>
-    <groupId>uk.org.fca.demoproject</groupId>
-    <artifactId>demoproject-kotlin-lambda</artifactId>
+    <groupId>uk.org.fca.tinysubmarine</groupId>
+    <artifactId>codejam-2024-08-28</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>demoproject</name>
-    <description>Demo project for Spring Boot</description>
+    <name>codejam</name>
+    <description>Code Jam 28th August 2024 "Tiny Submarine"</description>
     <url/>
     <licenses>
         <license />
@@ -30,29 +30,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>aws.sdk.kotlin</groupId>
-            <artifactId>s3</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-lambda</artifactId>
-            <version>1.12.771</version>
-        </dependency>
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-lambda-java-core</artifactId>
-            <version>1.2.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-lambda-java-events</artifactId>
-            <version>3.11.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.10</version>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin.version}</version>
         </dependency>
     </dependencies>
 
@@ -64,25 +44,7 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <version>2.0.20</version>
-
                 <extensions>true</extensions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
