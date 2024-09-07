@@ -5,57 +5,53 @@ import java.io.File
 class Main
 
 fun main(args: Array<String>) {
-    val vertexPairs = readVertexPairs("./data/rawdata")
-    val adjacents = buildAdjacentsMap(vertexPairs)
-    val paths = findPaths(adjacents, "start", "end")
+    if (args.count() != 2) {
+        println("A 'from' and 'to' cave must be specified")
+        return
+    }
+
+    val from = args[0]
+    val to = args[1]
+    val adjacents = buildAdjacentsMap(readAdjacents("./data/rawdata"))
+    val paths = findPaths(adjacents, from, to)
 
     paths.forEach { println(it) }
-    println("${paths.count()} unique roots found between start and end")
+    println("${paths.count()} unique roots found between ${from} and ${to}")
 }
 
-fun readVertexPairs(fileName: String): List<Pair<String, String>> {
+fun readAdjacents(fileName: String): List<Pair<String, String>> {
     return File(fileName)
         .useLines { it.toList() }
         .map { it.split('-') }
         .map { Pair(it.first(), it.last()) }
 }
 
-fun buildAdjacentsMap(vertexPairs: List<Pair<String, String>>): Map<String, List<String>> {
+fun buildAdjacentsMap(rawAdjacents: List<Pair<String, String>>): Map<String, List<String>> {
     val adjacents: MutableMap<String, MutableList<String>> = mutableMapOf();
+    fun addToAdjacents(from: String, to: String) {
+        val firstList = (adjacents[from] ?: mutableListOf())
+        firstList.add(to)
+        adjacents[from] = firstList
+    }
 
-    vertexPairs.forEach {
-        if (!adjacents.containsKey(it.first)) {
-            adjacents[it.first] = mutableListOf(it.second)
-        } else {
-            adjacents[it.first]?.add(it.second)
-        }
-
-        if (!adjacents.containsKey(it.second)) {
-            adjacents[it.second] = mutableListOf(it.first)
-        } else {
-            adjacents[it.second]?.add(it.first)
-        }
+    rawAdjacents.forEach {
+        addToAdjacents(it.first, it.second)
+        addToAdjacents(it.second, it.first)
     }
 
     return adjacents.mapValues {it.value.toList()}.toMap()
 }
 
-fun findPaths(adjacents: Map<String, List<String>>, a: String, b: String): Set<String> {
-    val visited: MutableMap<String, Boolean> = adjacents
-        .keys
-        .toList()
-        .associateBy({it}, {false})
-        .toMutableMap()
-
-    return findPathsInner(adjacents, a, b, visited, mutableListOf())
-}
-
-fun findPathsInner(
+fun findPaths(
     adjacents: Map<String, List<String>>,
     a: String,
     b: String,
-    visited: MutableMap<String, Boolean>,
-    path: MutableList<String>
+    visited: MutableMap<String, Boolean> = adjacents
+        .keys
+        .toList()
+        .associateBy({it}, {false})
+        .toMutableMap(),
+    path: MutableList<String> = mutableListOf()
 ): Set<String> {
     visited[a] = true;
     path.add(a)
@@ -67,8 +63,10 @@ fun findPathsInner(
 
     // Not at target node, recurse for each adjacent
     return (adjacents[a] ?: emptyList())
+        // Only process unvisited vertices
         .filter { !visited[it]!! }
-        .map { findPathsInner(adjacents, it, b, visited.toMutableMap(), path.toMutableList()) }
+        // Find any paths built from this path
+        .map { findPaths(adjacents, it, b, visited.toMutableMap(), path.toMutableList()) }
         .flatten()
         .toSet()
 }
