@@ -29,9 +29,9 @@ fun readAdjacents(fileName: String): List<Pair<String, String>> {
 fun buildAdjacentsMap(rawAdjacents: List<Pair<String, String>>): Map<String, List<String>> {
     val adjacents: MutableMap<String, MutableList<String>> = mutableMapOf();
     fun addToAdjacents(from: String, to: String) {
-        val firstList = (adjacents[from] ?: mutableListOf())
-        firstList.add(to)
-        adjacents[from] = firstList
+        val adjacentsList = (adjacents[from] ?: mutableListOf())
+        adjacentsList.add(to)
+        adjacents[from] = adjacentsList
     }
 
     rawAdjacents.forEach {
