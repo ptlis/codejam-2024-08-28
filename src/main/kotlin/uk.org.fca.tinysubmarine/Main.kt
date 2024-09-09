@@ -1,6 +1,7 @@
 package uk.org.fca.tinysubmarine
 
 import java.io.File
+import java.util.*
 
 class Main
 
@@ -53,7 +54,8 @@ fun findPaths(
         .toMutableMap(),
     path: MutableList<String> = mutableListOf()
 ): Set<String> {
-    visited[a] = true;
+    // small caves, designated being lower case, may be visited only once
+    visited[a] = a != a.uppercase(Locale.getDefault());
     path.add(a)
 
     // Target node found
