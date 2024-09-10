@@ -3,8 +3,6 @@ package uk.org.fca.tinysubmarine
 import java.io.File
 import java.util.*
 
-class Main
-
 fun main(args: Array<String>) {
     if (args.count() != 2) {
         println("A 'from' and 'to' cave must be specified")
@@ -17,7 +15,7 @@ fun main(args: Array<String>) {
     val paths = findPaths(adjacents, from, to)
 
     paths.forEach { println(it) }
-    println("${paths.count()} unique roots found between ${from} and ${to}")
+    println("${paths.count()} unique roots found between $from and $to")
 }
 
 fun readAdjacents(fileName: String): List<List<String>> {
@@ -44,12 +42,12 @@ fun findPaths(
     path: MutableList<String> = mutableListOf()
 ): Set<String> {
     // small caves, designated being lower case, may be visited only once
-    visited[a] = a != a.uppercase(Locale.getDefault());
+    visited[a] = a != a.uppercase(Locale.getDefault())
     path.add(a)
 
     // Target node found
     if (a == b) {
-        return mutableSetOf(path.toList().joinToString(" -> "));
+        return mutableSetOf(path.toList().joinToString(" -> "))
     }
 
     // Not at target node, recurse for each adjacent
