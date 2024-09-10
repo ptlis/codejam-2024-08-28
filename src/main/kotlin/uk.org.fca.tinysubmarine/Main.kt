@@ -20,15 +20,14 @@ fun main(args: Array<String>) {
     println("${paths.count()} unique roots found between ${from} and ${to}")
 }
 
-fun readAdjacents(fileName: String): List<Pair<String, String>> {
+fun readAdjacents(fileName: String): List<List<String>> {
     return File(fileName)
         .useLines { it.toList() }
         .map { it.split('-') }
-        .map { Pair(it.first(), it.last()) }
 }
 
-fun buildAdjacentsMap(rawAdjacents: List<Pair<String, String>>): Map<String, List<String>> {
-    return rawAdjacents.map { mapOf(it.first to it.second, it.second to it.first) }
+fun buildAdjacentsMap(rawAdjacents: List<List<String>>): Map<String, List<String>> {
+    return rawAdjacents.map { mapOf(it.first() to it.last(), it.last() to it.first()) }
         .flatMap { it.entries }
         .groupBy({ it.key }) { it.value }
 }
